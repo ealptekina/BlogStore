@@ -1,0 +1,82 @@
+﻿@model List<BlogStore.EntityLayer.Entities.Category>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Kategori Listesi</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
+</head>
+<body>
+
+    <div class="container mt-5">
+
+        <!-- Ekle butonu -->
+        <div class="mb-3 text-end">
+            <a href="@Url.Action("CreateCategory", "Category")" class="btn btn-success">
+                + Kategori Ekle
+            </a>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Kategori Adı</th>
+                    <th>Sil</th>
+                    <th>Güncelle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int count = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.CategoryName</td>
+                            <td>
+                                <a href="@Url.Action("DeleteCategory", "Category", new { id = item.CategoryId })" class="btn btn-danger btn-sm">Sil</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("UpdateCategory", "Category", new { id = item.CategoryId })" class="btn btn-primary btn-sm">Güncelle</a>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- DataTables initialization -->
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json' // Türkçe çeviri
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
