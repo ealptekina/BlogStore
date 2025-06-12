@@ -13,6 +13,9 @@ builder.Services.AddScoped<ICategoryDal, EFCategoryDal>();
 builder.Services.AddScoped<ICommentService, CommentManager>();
 builder.Services.AddScoped<ICommentDal, EFCommentDal>();
 
+builder.Services.AddScoped<IArticleService, ArticleManager>();
+builder.Services.AddScoped<IArticleDal, EFArticleDal>();
+
 
 builder.Services.AddDbContext<BlogContext>();
 
