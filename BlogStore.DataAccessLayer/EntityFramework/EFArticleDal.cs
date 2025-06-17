@@ -2,6 +2,7 @@
 using BlogStore.DataAccessLayer.Context;
 using BlogStore.DataAccessLayer.Repositories;
 using BlogStore.EntityLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace BlogStore.DataAccessLayer.EntityFramework
         private readonly BlogContext _context;
         public EFArticleDal(BlogContext context) : base(context)
         {
+            _context = context;
+        }
+
+        public List<Article> GetArticleWithCategories()
+        {
+            return _context.Articles.Include(x => x.Category).ToList();
         }
     }
 }

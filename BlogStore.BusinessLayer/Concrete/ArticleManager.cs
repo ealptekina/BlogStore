@@ -29,6 +29,11 @@ namespace BlogStore.BusinessLayer.Concrete
             return _articleDal.GetAll();
         }
 
+        public List<Article> TGetArticleWithCategories()
+        {
+            return _articleDal.GetArticleWithCategories();
+        }
+
         public Article TGetById(int id)
         {
             return _articleDal.GetById(id);

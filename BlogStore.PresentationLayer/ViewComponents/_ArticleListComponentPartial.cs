@@ -14,7 +14,7 @@ namespace BlogStore.PresentationLayer.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var values = _articleService.TGetAll();
+            var values = _articleService.TGetArticleWithCategories();
             return View(values);
         }
     }

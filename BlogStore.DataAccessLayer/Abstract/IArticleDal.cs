@@ -9,5 +9,6 @@ namespace BlogStore.DataAccessLayer.Abstract
 {
     public interface IArticleDal : IGenericDal<Article>
     {
+        List<Article> GetArticleWithCategories();
     }
 }
