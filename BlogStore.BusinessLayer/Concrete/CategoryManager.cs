@@ -1,5 +1,6 @@
 ﻿using BlogStore.BusinessLayer.Abstract;
 using BlogStore.DataAccessLayer.Abstract;
+using BlogStore.DataAccessLayer.Dtos;
 using BlogStore.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,11 @@ namespace BlogStore.BusinessLayer.Concrete
         public Category TGetById(int id)
         {
             return _categoryDal.GetById(id);
+        }
+
+        public List<CategoryWithArticleCountDto> TGetCategoryWithArticleCount()
+        {
+            return _categoryDal.GetCategoryWithArticleCount();
         }
 
         // Kategori adı boş değilse, uzunluğu 3 ile 30 karakter arasındaysa

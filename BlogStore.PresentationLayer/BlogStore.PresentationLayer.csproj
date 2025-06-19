@@ -18,8 +18,4 @@
     <ProjectReference Include="..\BlogStore.BusinessLayer\BlogStore.BusinessLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewComponents\ArticleDetailViewComponents\" />
-  </ItemGroup>
-
 </Project>

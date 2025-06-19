@@ -1,4 +1,5 @@
-﻿using BlogStore.EntityLayer.Entities;
+﻿using BlogStore.DataAccessLayer.Dtos;
+using BlogStore.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace BlogStore.BusinessLayer.Abstract
 {
     public interface ICategoryService: IGenericService<Category>
     {
+        public List<CategoryWithArticleCountDto> TGetCategoryWithArticleCount();
     }
 }
