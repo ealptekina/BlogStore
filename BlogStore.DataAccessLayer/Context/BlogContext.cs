@@ -1,9 +1,10 @@
 ﻿using BlogStore.EntityLayer.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogStore.DataAccessLayer.Context
 {
-    public class BlogContext : DbContext
+    public class BlogContext : IdentityDbContext<AppUser>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -12,9 +12,10 @@ namespace BlogStore.PresentationLayer.ViewComponents.ArticleDetailViewComponents
             _articleService = articleService;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(int id)
         {
-            return View();
+            var value = _articleService.TGetById(id);
+            return View(value);
         }
     }
 }

@@ -1,44 +1,27 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
-<!-- /*
-* Template Name: Blogy
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
+
 <!doctype html>
 <html lang="en">
 @await Component.InvokeAsync("_HeadLayoutComponentPartial")
 <body>
 
     @await Component.InvokeAsync("_NavbarLayoutComponentPartial")
-
     @await Component.InvokeAsync("_ArticleDetailMainCoverImageComponentPartial")
 
     <section class="section">
         <div class="container">
 
             <div class="row blog-entries element-animate">
-
                 <div class="col-md-12 col-lg-8 main-content">
-
-                    @await Component.InvokeAsync("_ArticleDetailContentComponentPartial")
-
-
+                    @await Component.InvokeAsync("_ArticleDetailContentComponentPartial", new { id = ViewBag.i })
                     <div class="pt-5">
                         <p>Categories:  <a href="#">Food</a>, <a href="#">Travel</a>  Tags: <a href="#">#manila</a>, <a href="#">#asia</a></p>
                     </div>
-
-
-                    @await Component.InvokeAsync("_ArticleDetailCommentListComponentPartial")
-
+                    @await Component.InvokeAsync("_ArticleDetailCommentListComponentPartial", new { id=ViewBag.i })
                 </div>
-
-                <!-- END main-content -->
-
                 <div class="col-md-12 col-lg-4 sidebar">
                     <div class="sidebar-box search-form-wrap">
                         <form action="#" class="sidebar-search-form">
@@ -55,19 +38,11 @@
                     <!-- END sidebar-box -->
                     @await Component.InvokeAsync("_ArticleDetailTagComponentPartial")
                 </div>
-                <!-- END sidebar -->
-
             </div>
         </div>
     </section>
 
-
-    <!-- Start posts-entry -->
-
-    <!-- End posts-entry -->
     @await Component.InvokeAsync("_FooterLayoutComponentPartial")
-
-
     @await Component.InvokeAsync("_ScriptsLayoutComponentPartial")
 
 

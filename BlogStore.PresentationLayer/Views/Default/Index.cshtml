@@ -3,22 +3,12 @@
     Layout = null;
 }
 
-<!-- /*
-* Template Name: Blogy
-* Template Author: Untree.co
-* Template URI: https://untree.co/
-* License: https://creativecommons.org/licenses/by/3.0/
-*/ -->
 <!doctype html>
 <html lang="en">
 
 @await Component.InvokeAsync("_HeadLayoutComponentPartial")
 
-
 <body>
-
-
-
     @await Component.InvokeAsync("_NavbarLayoutComponentPartial")
 
     <div class="hero overlay inner-page bg-primary py-5">
@@ -31,12 +21,8 @@
         </div>
     </div>
 
-
     @await Component.InvokeAsync("_ArticleListComponentPartial")
-
     @await Component.InvokeAsync("_FooterLayoutComponentPartial")
-
-
     @await Component.InvokeAsync("_ScriptsLayoutComponentPartial")
 
 

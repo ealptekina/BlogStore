@@ -16,5 +16,10 @@ namespace BlogStore.DataAccessLayer.EntityFramework
         public EFCommentDal(BlogContext context) : base(context)
         {
         }
+
+        public List<Comment> GetCommentsByArticle(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
