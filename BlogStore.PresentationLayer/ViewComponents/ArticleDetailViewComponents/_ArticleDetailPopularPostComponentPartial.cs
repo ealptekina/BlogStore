@@ -14,7 +14,7 @@ namespace BlogStore.PresentationLayer.ViewComponents.ArticleDetailViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var values = _articleService.GetTop3PopularArticles();
+            var values = _articleService.TGetTop3PopularArticles();
             return View(values);
         }
     }

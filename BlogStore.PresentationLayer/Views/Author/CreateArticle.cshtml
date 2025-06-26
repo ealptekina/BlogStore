@@ -1,0 +1,40 @@
+﻿@model BlogStore.EntityLayer.Entities.Article
+
+@{
+    ViewData["Title"] = "Makale Oluştur";
+    Layout = "~/Views/Shared/_AuthorLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">📝 Yeni Makale Oluştur</h2>
+
+    <form asp-action="CreateArticle" method="post">
+        <div class="form-group mb-3">
+            <label for="Title">Başlık</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Description">Açıklama</label>
+            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="ImageUrl">Görsel Bağlantısı</label>
+            <input asp-for="ImageUrl" class="form-control" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label for="CategoryId">Kategori</label>
+            <select asp-for="CategoryId" asp-items="ViewBag.v" class="form-control"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Makale Oluştur</button>
+        </div>
+    </form>
+</div>

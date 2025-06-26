@@ -1,0 +1,30 @@
+﻿@model List<BlogStore.EntityLayer.Entities.Article>
+
+@{
+    ViewData["Title"] = "MyArticleList";
+    Layout = "~/Views/Shared/_AuthorLayout.cshtml";
+}
+
+<h1>Makale Listesi</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Makale Başlığı</th>
+            <th>Sitede Gör</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var article in Model)
+        {
+            <tr>
+                <td>@article.Title</td>
+                <td>
+                    <a asp-controller="Article" asp-action="ArticleDetail" asp-route-id="@article.ArticleId" target="_blank" class="btn btn-sm btn-primary">
+                        Görüntüle
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

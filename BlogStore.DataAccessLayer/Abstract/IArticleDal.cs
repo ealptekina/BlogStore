@@ -12,5 +12,6 @@ namespace BlogStore.DataAccessLayer.Abstract
         List<Article> GetArticleWithCategories();
         public AppUser GetAppUserByArticleId(int id);
         List<Article> GetTop3PopularArticles();
+        List<Article> GetArticlesByAppUser(string id);
     }
 }

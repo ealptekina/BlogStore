@@ -11,6 +11,7 @@ namespace BlogStore.BusinessLayer.Abstract
     {
         public List<Article> TGetArticleWithCategories();
         public AppUser TGetAppUserByArticleId(int id);
-        public List<Article> GetTop3PopularArticles();
+        public List<Article> TGetTop3PopularArticles();
+        public List<Article> TGetArticlesByAppUser(string id);
     }
 }

@@ -69,5 +69,15 @@ namespace BlogStore.BusinessLayer.Concrete
         {
             return _articleDal.GetTop3PopularArticles();
         }
+
+        public List<Article> TGetTop3PopularArticles()
+        {
+            return _articleDal.GetTop3PopularArticles();
+        }
+
+        public List<Article> TGetArticlesByAppUser(string id)
+        {
+            return _articleDal.GetArticlesByAppUser(id);
+        }
     }
 }
