@@ -30,7 +30,7 @@
                         </form>
                     </div>
                     <!-- END sidebar-box -->
-                    @await Component.InvokeAsync("_ArticleDetailAboutAuthorComponentPartial")
+                    @await Component.InvokeAsync("_ArticleDetailAboutAuthorComponentPartial", new { id = ViewBag.i })
                     <!-- END sidebar-box -->
                     @await Component.InvokeAsync("_ArticleDetailPopularPostComponentPartial")
                     <!-- END sidebar-box -->

@@ -2,6 +2,7 @@
 using BlogStore.DataAccessLayer.Context;
 using BlogStore.DataAccessLayer.Repositories;
 using BlogStore.EntityLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace BlogStore.DataAccessLayer.EntityFramework
         private readonly BlogContext _context;
         public EFCommentDal(BlogContext context) : base(context)
         {
+            _context = context;
         }
 
         public List<Comment> GetCommentsByArticle(int id)
         {
-            throw new NotImplementedException();
+            var values = _context.Comments.Include(x => x.AppUser).Include(y => y.Article).Where(z => z.ArticleId == id).ToList();
+            return values;
         }
     }
 }

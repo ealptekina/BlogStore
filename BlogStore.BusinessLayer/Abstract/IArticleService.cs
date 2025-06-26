@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace BlogStore.BusinessLayer.Abstract
 {
-    public interface IArticleService: IGenericService<Article>
+    public interface IArticleService : IGenericService<Article>
     {
         public List<Article> TGetArticleWithCategories();
+        public AppUser TGetAppUserByArticleId(int id);
+        public List<Article> GetTop3PopularArticles();
     }
 }

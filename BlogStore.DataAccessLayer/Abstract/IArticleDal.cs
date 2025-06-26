@@ -10,5 +10,7 @@ namespace BlogStore.DataAccessLayer.Abstract
     public interface IArticleDal : IGenericDal<Article>
     {
         List<Article> GetArticleWithCategories();
+        public AppUser GetAppUserByArticleId(int id);
+        List<Article> GetTop3PopularArticles();
     }
 }
