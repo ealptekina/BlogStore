@@ -9,7 +9,7 @@
 <body>
 
     @await Component.InvokeAsync("_NavbarLayoutComponentPartial")
-    @await Component.InvokeAsync("_ArticleDetailMainCoverImageComponentPartial")
+    @await Component.InvokeAsync("_ArticleDetailMainCoverImageComponentPartial", new { id = ViewBag.i })
 
     <section class="section">
         <div class="container">

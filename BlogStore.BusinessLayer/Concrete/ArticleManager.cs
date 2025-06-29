@@ -79,5 +79,10 @@ namespace BlogStore.BusinessLayer.Concrete
         {
             return _articleDal.GetArticlesByAppUser(id);
         }
+
+        public Article TGetArticleByIdWithIncludes(int id)
+        {
+            return _articleDal.GetArticleByIdWithIncludes(id);
+        }
     }
 }
