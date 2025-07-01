@@ -47,5 +47,17 @@ namespace BlogStore.BusinessLayer.Concrete
         {
             _commentDal.Update(entity);
         }
+
+        public void CommentAdd(Comment c)
+        {
+            if (c.CommentDetail.Length <= 4 || c.CommentDetail.Length >= 501 || string.IsNullOrWhiteSpace(c.UserNameSurname) || string.IsNullOrWhiteSpace(c.AppUserId))
+            {
+                throw new ArgumentException("Yorum bilgileri geçersiz.");
+            }
+            _commentDal.Insert(c);
+        }
+
+
+
     }
 }

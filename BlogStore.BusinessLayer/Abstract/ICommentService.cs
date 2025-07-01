@@ -9,6 +9,7 @@ namespace BlogStore.BusinessLayer.Abstract
 {
     public interface ICommentService: IGenericService<Comment>
     {
-        public List<Comment> TGetCommentsByArticle(int id);
+        void CommentAdd(Comment comment);
+        List<Comment> TGetCommentsByArticle(int id);
     }
 }

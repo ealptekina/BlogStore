@@ -9,5 +9,11 @@ namespace BlogStore.PresentationLayer.Controllers
             ViewBag.i = id;
             return View();
         }
+
+        public IActionResult ArticleList(int id)
+        {
+           //var values = 
+            return View();
+        }
     }
 }

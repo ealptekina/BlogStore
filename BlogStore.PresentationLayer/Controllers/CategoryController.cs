@@ -51,5 +51,11 @@ namespace BlogStore.PresentationLayer.Controllers
             _categoryService.TUpdate(category);
             return RedirectToAction("CategoryList");
         }
+
+        public IActionResult AdminCategoryList()
+        {
+            var values = _categoryService.TGetAll();
+            return View(values);
+        }
     }
 }

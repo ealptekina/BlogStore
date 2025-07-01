@@ -1,0 +1,33 @@
+﻿
+
+<!doctype html>
+<html lang="en">
+
+@Html.Partial("/Views/AdminLayout/PartialHead.cshtml")
+
+<body>
+    <!--  Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+         data-sidebar-position="fixed" data-header-position="fixed">
+
+        <!--  App Topstrip -->
+        @Html.Partial("/Views/AdminLayout/PartialTopStrip.cshtml")
+        <!-- Sidebar Start -->
+        @Html.Partial("/Views/AdminLayout/PartialSidebar.cshtml")
+        <!--  Sidebar End -->
+        <!--  Main wrapper -->
+        <div class="body-wrapper">
+            <!--  Header Start -->
+            @Html.Partial("/Views/AdminLayout/PartialHeader.cshtml")
+            <!--  Header End -->
+            <div class="body-wrapper-inner">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("/Views/AdminLayout/PartialScript.cshtml")
+</body>
+
+</html>

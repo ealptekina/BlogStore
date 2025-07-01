@@ -27,9 +27,17 @@ namespace BlogStore.PresentationLayer.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("CreateArticle", "Author");
+                return RedirectToAction("Index", "Dashboard");
             }
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("UserLogin", "Login");
+        }
+
     }
 }

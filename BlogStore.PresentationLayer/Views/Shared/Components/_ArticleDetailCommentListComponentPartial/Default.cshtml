@@ -1,9 +1,11 @@
 ﻿@model List<BlogStore.EntityLayer.Entities.Comment>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<BlogStore.EntityLayer.Entities.AppUser> SignInManager
 
 <div class="pt-5 comment-wrap">
     <h3 class="mb-5 heading">@Model.Count Yorum</h3>
     <ul class="comment-list">
-        @foreach(var item in Model)
+        @foreach (var item in Model)
         {
             <li class="comment">
                 <div class="vcard">
@@ -17,23 +19,58 @@
                 </div>
             </li>
         }
-
     </ul>
     <!-- END comment-list -->
-
-    <div class="comment-form-wrap pt-5">
-        <h3 class="mb-5">Bir Yorum Bırakın</h3>
-        <form action="#" class="p-5 bg-light">
-           
-
-            <div class="form-group">
-                <label for="message">Yorumunuz</label>
-                <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Post Comment" class="btn btn-primary">
-            </div>
-
-        </form>
-    </div>
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <p>Yorum yazmak için <a href="/Account/Login">giriş yapmanız</a> gerekiyor.</p>
+    }
+    else
+    {
+        <div class="comment-form-wrap pt-5">
+            <h3 class="mb-5">Bir Yorum Bırakın</h3>
+            <form id="commentForm" class="p-5 bg-light">
+                <input type="hidden" name="ArticleId" value="@ViewBag.ArticleId" />
+                <div class="form-group">
+                    <label for="message">Yorumunuz</label>
+                    <textarea name="CommentDetail" id="message" cols="30" rows="10" class="form-control" required></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Yorumu Gönder" class="btn btn-primary">
+                </div>
+                <div id="commentResult" style="margin-top:10px;"></div>
+            </form>
+        </div>
+    }
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#commentForm').submit(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '@Url.Action("Add", "Comment")', // Controller ve action adı
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (res) {
+                        if (res.success) {
+                            $('#commentResult').html('<span style="color:green;">' + res.message + '</span>');
+                            $('#commentForm')[0].reset();
+
+                            // İstersen yorum listesini tekrar yükleyip güncelleyebilirsin
+                            location.reload(); // Sayfayı yenilemek için
+                        } else {
+                            $('#commentResult').html('<span style="color:red;">' + res.message + '</span>');
+                        }
+                    },
+                    error: function () {
+                        $('#commentResult').html('<span style="color:red;">Bir hata oluştu.</span>');
+                    }
+                });
+            });
+        });
+    </script>
+}

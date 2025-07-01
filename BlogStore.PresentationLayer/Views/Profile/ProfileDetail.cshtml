@@ -1,0 +1,37 @@
+﻿@model BlogStore.EntityLayer.Entities.AppUser
+@{
+    ViewData["Title"] = "Profil Detayı";
+    Layout = "~/Views/AdminLayout/_AuthorLayout.cshtml";
+}
+
+<div class="card mb-0">
+    <div class="card-body">
+        <form asp-action="UpdatePassword" asp-controller="Profile" method="post">
+            <fieldset disabled>
+                <div class="mb-3">
+                    <label class="form-label">Ad</label>
+                    <input type="text" class="form-control" value="@Model.Name" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Soyad</label>
+                    <input type="text" class="form-control" value="@Model.Surname" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Kullanıcı Adı</label>
+                    <input type="text" class="form-control" value="@Model.UserName" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" value="@Model.Email" />
+                </div>
+            </fieldset>
+
+            <div class="mb-3">
+                <label class="form-label">Yeni Şifre</label>
+                <input type="password" name="NewPassword" class="form-control" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Şifreyi Güncelle</button>
+        </form>
+    </div>
+</div>
