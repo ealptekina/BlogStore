@@ -6,32 +6,43 @@
 
 <div class="card mb-0">
     <div class="card-body">
-        <form asp-action="UpdatePassword" asp-controller="Profile" method="post">
-            <fieldset disabled>
-                <div class="mb-3">
-                    <label class="form-label">Ad</label>
-                    <input type="text" class="form-control" value="@Model.Name" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Soyad</label>
-                    <input type="text" class="form-control" value="@Model.Surname" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Kullanıcı Adı</label>
-                    <input type="text" class="form-control" value="@Model.UserName" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" value="@Model.Email" />
-                </div>
-            </fieldset>
+        <form asp-action="UpdateProfile" asp-controller="Profile" method="post">
 
+            <div class="mb-3">
+                <label class="form-label">Ad</label>
+                <input type="text" name="Name" class="form-control" value="@Model.Name" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Soyad</label>
+                <input type="text" name="Surname" class="form-control" value="@Model.Surname" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Kullanıcı Adı</label>
+                <input type="text" class="form-control" value="@Model.UserName" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="Email" class="form-control" value="@Model.Email" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Bilgileri Güncelle</button>
+        </form>
+
+        <hr />
+
+        <form asp-action="UpdatePassword" asp-controller="Profile" method="post" class="mt-4">
             <div class="mb-3">
                 <label class="form-label">Yeni Şifre</label>
                 <input type="password" name="NewPassword" class="form-control" required />
             </div>
-
             <button type="submit" class="btn btn-primary">Şifreyi Güncelle</button>
         </form>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-info mt-3">
+                @TempData["Message"]
+            </div>
+        }
     </div>
 </div>

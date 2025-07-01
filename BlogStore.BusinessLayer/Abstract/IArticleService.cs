@@ -15,5 +15,6 @@ namespace BlogStore.BusinessLayer.Abstract
         public List<Article> TGetArticlesByAppUser(string id);
 
         public Article TGetArticleByIdWithIncludes(int id);
+
     }
 }

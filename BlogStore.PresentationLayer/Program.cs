@@ -20,7 +20,11 @@ builder.Services.AddScoped<IArticleDal, EFArticleDal>();
 
 
 builder.Services.AddDbContext<BlogContext>();
-builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<BlogContext>();
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<BlogContext>()
+    .AddDefaultTokenProviders();  // <<< Burada kesinlikle olmalý
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
