@@ -3,65 +3,84 @@
 @inject SignInManager<BlogStore.EntityLayer.Entities.AppUser> SignInManager
 
 <div class="pt-5 comment-wrap">
+
     <h3 class="mb-5 heading">@Model.Count Yorum</h3>
-    <ul class="comment-list">
-        @foreach (var item in Model)
-        {
-            <li class="comment">
-                <div class="vcard">
-                    <img src="@item.AppUser.ImageUrl" alt="Image placeholder">
-                </div>
-                <div class="comment-body">
-                    <h3>@item.AppUser.Name @item.AppUser.Surname</h3>
-                    <div class="meta">@item.CommentDate.ToString("dd-MMM-yyyy")</div>
-                    <p>@item.CommentDetail</p>
-                    <p><a href="#" class="reply rounded">Yanıtla</a></p>
-                </div>
-            </li>
-        }
-    </ul>
+
+    <div id="commentList">
+        <ul class="comment-list">
+            @foreach (var item in Model)
+            {
+                <li class="comment">
+                    <div class="vcard">
+                        <img src="@item.AppUser.ImageUrl" alt="Image placeholder" />
+                    </div>
+                    <div class="comment-body">
+                        <h3>@item.AppUser.Name @item.AppUser.Surname</h3>
+                        <div class="meta">@item.CommentDate.ToString("dd-MMM-yyyy")</div>
+                        <p>@item.CommentDetail</p>
+                        <p><a href="#" class="reply rounded">Yanıtla</a></p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
     <!-- END comment-list -->
     @if (!SignInManager.IsSignedIn(User))
     {
-        <p>Yorum yazmak için <a href="/Account/Login">giriş yapmanız</a> gerekiyor.</p>
+        <p>Yorum yazmak için <a href="/Login/UserLogin">giriş yapmanız</a> gerekiyor.</p>
     }
     else
     {
         <div class="comment-form-wrap pt-5">
             <h3 class="mb-5">Bir Yorum Bırakın</h3>
-            <form id="commentForm" class="p-5 bg-light">
-                <input type="hidden" name="ArticleId" value="@ViewBag.ArticleId" />
+            <form id="commentForm" class="p-5 bg-light" method="post" action="@Url.Action("Add", "Comment")">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="ArticleId" value="@ViewBag.i" />
                 <div class="form-group">
                     <label for="message">Yorumunuz</label>
                     <textarea name="CommentDetail" id="message" cols="30" rows="10" class="form-control" required></textarea>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Yorumu Gönder" class="btn btn-primary">
+                <div class="form-group mt-3">
+                    <input type="submit" value="Yorumu Gönder" class="btn btn-primary" />
                 </div>
                 <div id="commentResult" style="margin-top:10px;"></div>
             </form>
         </div>
     }
+
 </div>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(function () {
             $('#commentForm').submit(function (e) {
                 e.preventDefault();
 
                 $.ajax({
-                    url: '@Url.Action("Add", "Comment")', // Controller ve action adı
-                    type: 'POST',
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
                     data: $(this).serialize(),
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
                     success: function (res) {
                         if (res.success) {
                             $('#commentResult').html('<span style="color:green;">' + res.message + '</span>');
                             $('#commentForm')[0].reset();
 
-                            // İstersen yorum listesini tekrar yükleyip güncelleyebilirsin
-                            location.reload(); // Sayfayı yenilemek için
+                            // Yorum listesini yeniden yükle
+                            $.ajax({
+                                url: '@Url.Action("GetCommentsByArticle", "Comment")',
+                                type: 'GET',
+                                data: { articleId: $('input[name="ArticleId"]').val() },
+                                success: function (html) {
+                                    $('#commentList').html(html);
+                                },
+                                error: function () {
+                                    $('#commentResult').html('<span style="color:red;">Yorumlar yüklenirken hata oluştu.</span>');
+                                }
+                            });
                         } else {
                             $('#commentResult').html('<span style="color:red;">' + res.message + '</span>');
                         }

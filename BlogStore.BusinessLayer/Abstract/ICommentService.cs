@@ -1,4 +1,5 @@
-﻿using BlogStore.EntityLayer.Entities;
+﻿using BlogStore.DataAccessLayer.Dtos;
+using BlogStore.EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace BlogStore.BusinessLayer.Abstract
     {
         void CommentAdd(Comment comment);
         List<Comment> TGetCommentsByArticle(int id);
+
+        List<CommentWithArticleDto> GetCommentsWithArticleTitles();
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BlogStore.BusinessLayer.Abstract;
+using BlogStore.DataAccessLayer.Dtos;
 using BlogStore.EntityLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,9 +22,10 @@ namespace BlogStore.PresentationLayer.Controllers
 
         public IActionResult CommentList()
         {
-            var values = _commentService.TGetAll();
+            var values = _commentService.GetCommentsWithArticleTitles();
             return View(values);
         }
+
 
         [HttpGet]
         public IActionResult CreateComment()
@@ -62,10 +64,16 @@ namespace BlogStore.PresentationLayer.Controllers
             return RedirectToAction("CommentList");
         }
 
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Add(Comment comment)
         {
+            if (comment.ArticleId == 0)
+            {
+                return Json(new { success = false, message = "Makale bilgisi eksik." });
+            }
+
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -79,12 +87,70 @@ namespace BlogStore.PresentationLayer.Controllers
 
             try
             {
-                _commentService.CommentAdd(comment);
+                _commentService.TInsert(comment);
+                // redirectUrl KALDIRILDI, sadece success ve message dönüyoruz
                 return Json(new { success = true, message = "Yorumunuz başarıyla eklendi." });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "Yorum eklenirken hata oluştu: " + ex.Message });
+            }
+        }
+
+
+
+
+
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult ReplyToComment(int id) // id: cevap verilecek yorumun Id'si
+        {
+            var originalComment = _commentService.TGetById(id);
+            if (originalComment == null)
+            {
+                return NotFound();
+            }
+
+            // Yeni yorum (cevap) oluşturmak için View'e original comment bilgisi gönderebilirsin
+            ViewBag.OriginalComment = originalComment;
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ReplyToComment(int id, Comment replyComment)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("UserLogin", "Login"); // veya uygun bir yönlendirme
+            }
+
+            var originalComment = _commentService.TGetById(id);
+            if (originalComment == null)
+            {
+                return NotFound();
+            }
+
+            replyComment.AppUserId = user.Id.ToString();
+            replyComment.UserNameSurname = user.UserName;
+            replyComment.CommentDate = DateTime.Now;
+            replyComment.IsValid = false;
+
+            // Eğer cevabı ana yorumun altına ilişkilendirmek istiyorsan, Comment entity'ne ParentCommentId gibi bir alan ekleyip buraya atayabilirsin.
+            // replyComment.ParentCommentId = id;
+
+            try
+            {
+                _commentService.TInsert(replyComment);
+                return RedirectToAction("CommentList");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Yorum eklenirken hata oluştu: " + ex.Message);
+                ViewBag.OriginalComment = originalComment;
+                return View(replyComment);
             }
         }
 

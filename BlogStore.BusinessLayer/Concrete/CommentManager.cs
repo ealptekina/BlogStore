@@ -1,6 +1,8 @@
 ﻿using BlogStore.BusinessLayer.Abstract;
 using BlogStore.DataAccessLayer.Abstract;
+using BlogStore.DataAccessLayer.Dtos;
 using BlogStore.EntityLayer.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +59,10 @@ namespace BlogStore.BusinessLayer.Concrete
             _commentDal.Insert(c);
         }
 
-
+        public List<CommentWithArticleDto> GetCommentsWithArticleTitles()
+        {
+            return _commentDal.GetCommentsWithArticleTitles();
+        }
 
     }
 }

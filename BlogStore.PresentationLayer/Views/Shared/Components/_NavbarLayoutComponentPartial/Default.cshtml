@@ -1,4 +1,7 @@
-﻿<div class="site-mobile-menu site-navbar-target">
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<BlogStore.EntityLayer.Entities.AppUser> SignInManager
+
+<div class="site-mobile-menu site-navbar-target">
     <div class="site-mobile-menu-header">
         <div class="site-mobile-menu-close">
             <span class="icofont-close js-menu-toggle"></span>
@@ -21,13 +24,29 @@
                             <span class="bi-search"></span>
                         </form>
 
+
                         <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu mx-auto">
-                            <li><a href="index.html">Ana Sayfa</a></li>
-                            <li><a href="category.html">Bloglar</a></li>
-                            <li><a href="services.html">Yazarlar</a></li>
-                            <li><a href="about.html">Bize Yazın</a></li>
-                            <li><a href="about.html">Giriş Yap</a></li>
+                            <li><a href="/Default/Index">Ana Sayfa</a></li>
+                            <li><a href="/Category/Index">Bloglar</a></li>
+                            <li><a href="/Author/Index">Yazarlar</a></li>
+                            <li><a href="/Home/Contact">Bize Yazın</a></li>
+                            @if (!SignInManager.IsSignedIn(User))
+                            {
+                                <li><a href="/Login/UserLogin">Giriş Yap</a></li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <form asp-controller="Login" asp-action="Logout" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" style="background:none; border:none; padding:0; color:#007bff; cursor:pointer;">
+                                            Çıkış Yap
+                                        </button>
+                                    </form>
+                                </li>
+                            }
                         </ul>
+
                     </div>
                     <div class="col-2 text-end">
                         <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light">

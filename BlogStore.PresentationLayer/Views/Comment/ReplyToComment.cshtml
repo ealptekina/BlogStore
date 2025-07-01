@@ -1,0 +1,35 @@
+﻿@model BlogStore.EntityLayer.Entities.Comment
+
+@{
+    ViewData["Title"] = "Yorum Cevapla";
+    Layout = "~/Views/AdminLayout/_AuthorLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">Yorum Cevapla</h5>
+
+        <div class="mb-3">
+            <label class="form-label">Orijinal Yorum</label>
+            <textarea class="form-control" rows="4" readonly>@ViewBag.OriginalComment?.CommentDetail</textarea>
+        </div>
+
+        <form asp-action="ReplyToComment" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="CommentId" />
+
+            <div class="mb-3">
+                <label asp-for="CommentDetail" class="form-label">Cevabınız</label>
+                <textarea asp-for="CommentDetail" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="CommentDetail" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Gönder</button>
+            <a href="@Url.Action("CommentList", "Comment")" class="btn btn-secondary ms-2">İptal</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
