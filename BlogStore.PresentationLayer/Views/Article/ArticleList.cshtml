@@ -42,12 +42,18 @@
                                 <td>@count</td>
                                 <td>@article.Title</td>
                                 <td>
-                                    @(
-                                    article.Description != null && article.Description.Length > 50
-                                    ? article.Description.Substring(0, 50) + "..."
-                                    : article.Description
-                                        )
+                                    @if (!string.IsNullOrEmpty(article.Description))
+                                    {
+                                        var plainText = System.Text.RegularExpressions.Regex.Replace(article.Description, "<.*?>", string.Empty);
+                                        var preview = plainText.Length > 50 ? plainText.Substring(0, 50) + "..." : plainText;
+
+                                        <span title="@plainText" data-bs-toggle="tooltip" data-bs-placement="top">
+                                            @preview
+                                        </span>
+                                    }
                                 </td>
+
+
                                 <td>
                                     @if (!string.IsNullOrEmpty(article.ImageUrl))
                                     {
@@ -80,13 +86,17 @@
 
 <script>
     $(document).ready(function () {
-        $('#articleTable').DataTable({
-            pageLength: 5,
-            lengthChange: false,
-            pagingType: 'simple',
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json'
-            }
-        });
-    });
+         $('#articleTable').DataTable({
+             pageLength: 5,
+             lengthChange: false,
+             pagingType: 'simple',
+             language: {
+                 url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json'
+             }
+         });
+
+         // Tooltip aktif et
+         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+         [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
+     });
 </script>
