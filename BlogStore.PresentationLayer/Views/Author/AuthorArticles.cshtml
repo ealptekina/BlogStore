@@ -1,0 +1,78 @@
+﻿@model List<BlogStore.EntityLayer.Entities.Article>
+
+@{
+    ViewData["Title"] = "Yazarın Makaleleri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    string authorSlug = ViewBag.AuthorNameSlug ?? "";
+}
+
+<div class="container py-5">
+
+    <div class="row">
+        @if (Model == null || !Model.Any())
+        {
+            <p>Bu yazarın henüz hiç makalesi yok.</p>
+        }
+        else
+        {
+            @foreach (var article in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="@Url.Action("ArticleDetail", "Article", new { slug = article.Slug })">
+                            <img src="@article.ImageUrl" class="card-img-top" alt="@article.Title" style="height: 180px; object-fit: cover;" />
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="@Url.Action("ArticleDetail", "Article", new { slug = article.Slug })" class="text-decoration-none text-dark">
+                                    @article.Title
+                                </a>
+                            </h5>
+                            <p class="card-text flex-grow-1">
+                                @(article.Description != null && article.Description.Length > 100
+                                    ? article.Description.Substring(0, 100) + "..."
+                                    : article.Description)
+                            </p>
+                            <a href="@Url.Action("ArticleDetail", "Article", new { slug = article.Slug })" class="btn btn-primary mt-auto">Devamını Oku</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <!-- Pagination -->
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Page navigation example" class="mt-4">
+            <ul class="pagination justify-content-center">
+
+                <!-- Önceki butonu -->
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("AuthorArticles", "Author", new { authorName = authorSlug, page = currentPage - 1 })" aria-label="Önceki">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- Sayfa numaraları -->
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(currentPage == i ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("AuthorArticles", "Author", new { authorName = authorSlug, page = i })">@i</a>
+                    </li>
+                }
+
+                <!-- Sonraki butonu -->
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("AuthorArticles", "Author", new { authorName = authorSlug, page = currentPage + 1 })" aria-label="Sonraki">
+                        <span aria-hidden="true">&raquo;</span>
+
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    }
+

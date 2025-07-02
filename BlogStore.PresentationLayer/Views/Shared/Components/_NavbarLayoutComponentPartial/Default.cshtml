@@ -28,7 +28,7 @@
                         <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu mx-auto">
                             <li><a href="/Default/Index">Ana Sayfa</a></li>
                             <li><a href="/Category/Index">Bloglar</a></li>
-                            <li><a href="/Author/Index">Yazarlar</a></li>
+                            <li><a href="@Url.Action("Index", "Author")">Yazarlar</a></li>
                             <li><a href="/Home/Contact">Bize Yazın</a></li>
                             @if (!SignInManager.IsSignedIn(User))
                             {

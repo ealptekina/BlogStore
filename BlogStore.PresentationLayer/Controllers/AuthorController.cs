@@ -13,6 +13,7 @@ namespace BlogStore.PresentationLayer.Controllers
         private readonly ICategoryService _categoryService;
         private readonly UserManager<AppUser> _userManager;
 
+
         public AuthorController(IArticleService articleService, ICategoryService categoryService, UserManager<AppUser> userManager)
         {
             _articleService = articleService;
@@ -66,5 +67,63 @@ namespace BlogStore.PresentationLayer.Controllers
 
             return View(articles); // View'a List<Article> gönder
         }
+
+        // Tüm yazarları listeler
+        public IActionResult Index(int page = 1)
+        {
+            int pageSize = 6; // Her sayfada 6 yazar gösterilecek
+            var allAuthors = _userManager.Users.ToList();
+            var pagedAuthors = allAuthors
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling(allAuthors.Count / (double)pageSize);
+
+            return View(pagedAuthors);
+        }
+
+
+        // Seçilen yazarın bloglarını listeler
+
+        public IActionResult AuthorArticles(string authorName, int page = 1, int pageSize = 3)
+        {
+            if (string.IsNullOrEmpty(authorName))
+                return NotFound();
+
+            var names = authorName.Split('-');
+            if (names.Length < 2)
+                return NotFound();
+
+            string name = names[0];
+            string surname = names[1];
+
+            var author = _userManager.Users.FirstOrDefault(u =>
+                u.Name.ToLower() == name && u.Surname.ToLower() == surname);
+
+            if (author == null)
+                return NotFound();
+
+            var allArticles = _articleService.TGetArticlesByAppUser(author.Id);
+
+            // Sayfalama için Skip ve Take uygulayalım:
+            var pagedArticles = allArticles
+                                .Skip((page - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToList();
+
+            // Toplam sayfa sayısı
+            int totalArticles = allArticles.Count();
+            int totalPages = (int)Math.Ceiling(totalArticles / (double)pageSize);
+
+            // ViewBag ile toplam sayfa ve mevcut sayfayı gönder
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.AuthorNameSlug = authorName;
+
+            return View(pagedArticles);
+        }
+
     }
 }

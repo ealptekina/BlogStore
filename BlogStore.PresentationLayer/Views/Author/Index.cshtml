@@ -1,0 +1,61 @@
+﻿@model List<BlogStore.EntityLayer.Entities.AppUser>
+
+@{
+    ViewData["Title"] = "Yazarlar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+}
+
+<div class="container py-5">
+    <div class="row">
+        @foreach (var author in Model)
+        {
+            string authorSlug = $"{author.Name}-{author.Surname}".ToLower().Replace(" ", "-");
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="@author.ImageUrl" class="card-img-top" alt="@author.Name" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@author.Name @author.Surname</h5>
+                        <p class="card-text">
+                            @(author.Description != null ? (author.Description.Length > 100 ? author.Description.Substring(0, 100) + "..." : author.Description) : "")
+                        </p>
+                        <a href="@Url.Action("AuthorArticles", "Author", new { authorName = authorSlug })" class="btn btn-primary mt-auto">
+                            Yazarın Yazıları
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (totalPages > 1)
+    {
+        <nav class="mt-4" aria-label="Yazar Sayfalama">
+            <ul class="pagination justify-content-center">
+
+                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Author", new { page = currentPage - 1 })" aria-label="Önceki">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(currentPage == i ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", "Author", new { page = i })">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Author", new { page = currentPage + 1 })" aria-label="Sonraki">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    }
+</div>
