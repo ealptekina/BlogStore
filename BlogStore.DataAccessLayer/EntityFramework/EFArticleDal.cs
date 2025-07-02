@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,6 +50,16 @@ namespace BlogStore.DataAccessLayer.EntityFramework
         {
             var values = _context.Articles.OrderByDescending(x => x.ArticleId).Take(3).ToList();
             return values;
+        }
+
+        public Article Get(Expression<Func<Article, bool>> filter)
+        {
+            return _context.Articles.FirstOrDefault(filter);
+        }
+
+        public Article Get(Func<Article, bool> predicate)
+        {
+            return _context.Articles.AsEnumerable().FirstOrDefault(predicate);
         }
     }
 }

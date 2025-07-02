@@ -18,7 +18,9 @@
                             <span class="date">@item.CreatedDate.ToString("dd-MMM-yyyy") &bullet; <a href="#">@item.Category.CategoryName</a></span>
                             <h2><a href="/Article/ArticleDetail/@item.ArticleId">@item.Title</a></h2>
                             <p>@item.Description.Substring(0, 100)</p>
-                            <p><a href="/Article/ArticleDetail/@item.ArticleId" class="btn btn-sm btn-outline-primary">Devamını Oku</a></p>
+                            <p>
+                                <a href="/Article/ArticleDetail/@item.Slug" class="btn btn-sm btn-outline-primary">Devamını Oku</a>
+                            </p>
                         </div>
                     </div>
                 }

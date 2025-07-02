@@ -36,7 +36,7 @@
                     <!-- END sidebar-box -->
                     @await Component.InvokeAsync("_ArticleDetailCategoryComponentPartial")
                     <!-- END sidebar-box -->
-                    @await Component.InvokeAsync("_ArticleDetailTagComponentPartial")
+                    @await Component.InvokeAsync("_ArticleDetailTagComponentPartial", new { id = ViewBag.i })
                 </div>
             </div>
         </div>

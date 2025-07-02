@@ -84,5 +84,10 @@ namespace BlogStore.BusinessLayer.Concrete
         {
             return _articleDal.GetArticleByIdWithIncludes(id);
         }
+
+        public Article TGetArticleBySlug(string slug)
+        {
+            return _articleDal.Get(a => a.Slug == slug);
+        }
     }
 }

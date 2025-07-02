@@ -31,7 +31,7 @@
                         <tr>
                             <td>@article.Title</td>
                             <td>
-                                <a href="@Url.Action("ArticleDetail", "Article", new { id = article.ArticleId })" target="_blank" class="btn btn-primary btn-sm">
+                                <a href="@Url.Action("ArticleDetail", "Article", new { slug = article.Slug })" target="_blank" class="btn btn-primary btn-sm">
                                     Görüntüle
                                 </a>
                             </td>

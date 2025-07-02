@@ -18,6 +18,11 @@ namespace BlogStore.BusinessLayer.Concrete
             _tagDal = tagDal;
         }
 
+        public List<Tag> GetTagsByArticleId(int articleId)
+        {
+            return _tagDal.GetTagsByArticleId(articleId);
+        }
+
         public void TDelete(int id)
         {
             _tagDal.Delete(id);

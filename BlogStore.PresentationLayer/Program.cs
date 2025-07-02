@@ -18,6 +18,9 @@ builder.Services.AddScoped<ICommentDal, EFCommentDal>();
 builder.Services.AddScoped<IArticleService, ArticleManager>();
 builder.Services.AddScoped<IArticleDal, EFArticleDal>();
 
+builder.Services.AddScoped<ITagService, TagManager>();
+builder.Services.AddScoped<ITagDal, EFTagDal>();
+
 
 builder.Services.AddDbContext<BlogContext>();
 builder.Services.AddIdentity<AppUser, IdentityRole>()
@@ -48,9 +51,14 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
+    name: "articleDetailSlug",
+    pattern: "Article/ArticleDetail/{slug}",
+    defaults: new { controller = "Article", action = "ArticleDetail" });
+
+app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{slug?}");
+
 
 
 app.Run();

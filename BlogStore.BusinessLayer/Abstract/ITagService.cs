@@ -9,5 +9,6 @@ namespace BlogStore.BusinessLayer.Abstract
 {
     public interface ITagService: IGenericService<Tag>
     {
+        List<Tag> GetTagsByArticleId(int articleId);
     }
 }

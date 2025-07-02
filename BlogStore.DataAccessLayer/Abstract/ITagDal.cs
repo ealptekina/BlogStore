@@ -9,5 +9,6 @@ namespace BlogStore.DataAccessLayer.Abstract
 {
     public interface ITagDal : IGenericDal<Tag>
     {
+        List<Tag> GetTagsByArticleId(int articleId);
     }
 }

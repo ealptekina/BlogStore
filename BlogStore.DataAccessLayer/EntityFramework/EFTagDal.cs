@@ -15,6 +15,15 @@ namespace BlogStore.DataAccessLayer.EntityFramework
         private readonly BlogContext _context;
         public EFTagDal(BlogContext context) : base(context)
         {
+            _context = context;
+        }
+
+        public List<Tag> GetTagsByArticleId(int articleId)
+        {
+            return _context.ArticleTags
+        .Where(at => at.ArticleId == articleId)
+        .Select(at => at.Tag)
+        .ToList();
         }
     }
 }

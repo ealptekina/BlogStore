@@ -4,6 +4,7 @@ using BlogStore.DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogStore.DataAccessLayer.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20250702000022_mig4")]
+    partial class mig4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,21 +146,6 @@ namespace BlogStore.DataAccessLayer.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Articles");
-                });
-
-            modelBuilder.Entity("BlogStore.EntityLayer.Entities.ArticleTag", b =>
-                {
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArticleId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("ArticleTags");
                 });
 
             modelBuilder.Entity("BlogStore.EntityLayer.Entities.Category", b =>
@@ -382,25 +370,6 @@ namespace BlogStore.DataAccessLayer.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("BlogStore.EntityLayer.Entities.ArticleTag", b =>
-                {
-                    b.HasOne("BlogStore.EntityLayer.Entities.Article", "Article")
-                        .WithMany("ArticleTags")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlogStore.EntityLayer.Entities.Tag", "Tag")
-                        .WithMany("ArticleTags")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("BlogStore.EntityLayer.Entities.Comment", b =>
                 {
                     b.HasOne("BlogStore.EntityLayer.Entities.AppUser", "AppUser")
@@ -480,19 +449,12 @@ namespace BlogStore.DataAccessLayer.Migrations
 
             modelBuilder.Entity("BlogStore.EntityLayer.Entities.Article", b =>
                 {
-                    b.Navigation("ArticleTags");
-
                     b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("BlogStore.EntityLayer.Entities.Category", b =>
                 {
                     b.Navigation("Articles");
-                });
-
-            modelBuilder.Entity("BlogStore.EntityLayer.Entities.Tag", b =>
-                {
-                    b.Navigation("ArticleTags");
                 });
 #pragma warning restore 612, 618
         }
