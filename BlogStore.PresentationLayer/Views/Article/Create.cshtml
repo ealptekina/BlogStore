@@ -1,0 +1,66 @@
+﻿@model BlogStore.EntityLayer.Entities.Article
+
+@{
+    ViewData["Title"] = "Makale Ekle";
+    Layout = "~/Views/AdminLayout/_AuthorLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">Makale Ekle</h5>
+        <p class="card-subtitle mb-4">Yeni bir makale ekleyebilirsiniz.</p>
+
+        <form asp-action="Create" asp-controller="Article" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Başlık</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">İçerik</label>
+                <textarea asp-for="Description" class="form-control" rows="6" id="editor"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label">Görsel Yükle</label>
+                <input type="file" name="ImageFile" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label">Kategori</label>
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories"></select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a href="@Url.Action("ArticleList", "Article")" class="btn btn-secondary ms-2">Geri Dön</a>
+        </form>
+    </div>
+</div>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            toolbar: [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
+                'bulletedList', 'numberedList', '|',
+                'blockQuote', 'link', 'insertTable', 'imageUpload', '|',
+                'undo', 'redo'
+            ]
+        })
+        .then(editor => {
+            console.log('Editor hazır', editor);
+        })
+        .catch(error => {
+            console.error('Editor hatası:', error);
+        });
+</script>
+
+
+<!-- CKEditor 5 CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
+

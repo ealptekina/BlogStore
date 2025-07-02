@@ -24,8 +24,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Kategori Adı</th>
-                        <th scope="col">Sil</th>
-                        <th scope="col">Güncelle</th>
+                        <th scope="col">İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,11 +35,11 @@
                             <tr>
                                 <td>@count</td>
                                 <td>@item.CategoryName</td>
-                                <td>
-                                    <a href="@Url.Action("DeleteCategory", "Category", new { id = item.CategoryId })" class="btn btn-danger btn-sm">Sil</a>
-                                </td>
+
                                 <td>
                                     <a href="@Url.Action("UpdateCategory", "Category", new { id = item.CategoryId })" class="btn btn-primary btn-sm">Güncelle</a>
+                                    <a href="@Url.Action("DeleteCategory", "Category", new { id = item.CategoryId })" class="btn btn-danger btn-sm">Sil</a>
+
                                 </td>
                             </tr>
                             count++;

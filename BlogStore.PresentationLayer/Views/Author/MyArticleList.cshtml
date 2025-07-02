@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Makale Listesi";
     Layout = "~/Views/AdminLayout/_AuthorLayout.cshtml";
+    int count = 1;
 }
 <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
@@ -12,8 +13,8 @@
         <p class="card-subtitle mb-4">Kendi yazdığınız makaleleri buradan listeleyebilir ve sitede görüntüleyebilirsiniz.</p>
 
         <div class="mb-3 text-end">
-            <a href="@Url.Action("CreateArticle", "Article")" class="btn btn-success">
-                + Makale Oluştur
+            <a href="@Url.Action("Create", "Article")" class="btn btn-success">
+                + Yeni Makale Oluştur
             </a>
         </div>
 
@@ -21,6 +22,7 @@
             <table id="articleTable" class="table mb-0 text-nowrap align-middle fs-3">
                 <thead class="table-light">
                     <tr>
+                        <th>#</th>
                         <th>Makale Başlığı</th>
                         <th>Sitede Gör</th>
                     </tr>
@@ -29,13 +31,17 @@
                     @foreach (var article in Model)
                     {
                         <tr>
-                            <td>@article.Title</td>
+                            <td>@count</td>
+                            <td style="max-width: 350px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                @article.Title
+                            </td>
                             <td>
-                                <a href="@Url.Action("ArticleDetail", "Article", new { slug = article.Slug })" target="_blank" class="btn btn-primary btn-sm">
+                                <a href="@Url.Action("ArticleDetail", "Article", new { slug = article.Slug })" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                                     Görüntüle
                                 </a>
                             </td>
                         </tr>
+                        count++;
                     }
                 </tbody>
             </table>
@@ -43,6 +49,7 @@
     </div>
 </div>
 
+<!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>

@@ -22,4 +22,8 @@
     <ProjectReference Include="..\BlogStore.BusinessLayer\BlogStore.BusinessLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>

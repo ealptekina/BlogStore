@@ -17,5 +17,6 @@ namespace BlogStore.BusinessLayer.Abstract
         public Article TGetArticleByIdWithIncludes(int id);
         Article TGetArticleBySlug(string slug);
         List<Article> TGetArticlesWithCategory();
+        List<Article> TGetListWithCategoryAndUser();
     }
 }

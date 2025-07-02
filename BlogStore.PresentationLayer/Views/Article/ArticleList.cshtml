@@ -1,8 +1,92 @@
-﻿
+﻿@model List<BlogStore.EntityLayer.Entities.Article>
+
 @{
-    ViewData["Title"] = "ArticleList";
-    Layout = "~/Views/AuthorLayout/_AuthorLayout.cshtml";
+    ViewData["Title"] = "Makale Listesi";
+    Layout = "~/Views/AdminLayout/_AuthorLayout.cshtml";
 }
 
-<h1>ArticleList</h1>
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">Makale Listesi</h5>
+        <p class="card-subtitle mb-4">Makale işlemlerini buradan yönetebilirsiniz.</p>
+
+        <div class="mb-3 text-end">
+            <a href="@Url.Action("Create", "Article")" class="btn btn-success">
+                + Yeni Makale Oluştur
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table id="articleTable" class="table mb-0 text-nowrap align-middle fs-3">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Başlık</th>
+                        <th>Açıklama</th>
+                        <th>Görsel</th>
+                        <th>Kategori</th>
+                        <th>Oluşturan</th>
+                        <th>Tarih</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int count = 1;
+                        foreach (var article in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@article.Title</td>
+                                <td>
+                                    @(
+                                    article.Description != null && article.Description.Length > 50
+                                    ? article.Description.Substring(0, 50) + "..."
+                                    : article.Description
+                                        )
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(article.ImageUrl))
+                                    {
+                                        <img src="@article.ImageUrl" alt="Görsel" style="width: 80px; height: 60px; object-fit: cover;" />
+                                    }
+                                </td>
+                                <td>@article.Category?.CategoryName</td>
+                                <td>@article.AppUser?.UserName</td>
+                                <td>@article.CreatedDate.ToString("dd.MM.yyyy")</td>
+                                <td>
+                                    <a href="@Url.Action("Edit", "Article", new { id = article.ArticleId })" class="btn btn-primary btn-sm">Düzenle</a>
+                                    <a href="@Url.Action("Delete", "Article", new { id = article.ArticleId })" class="btn btn-danger btn-sm" onclick="return confirm('Silmek istediğinize emin misiniz?');">Sil</a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#articleTable').DataTable({
+            pageLength: 5,
+            lengthChange: false,
+            pagingType: 'simple',
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/tr.json'
+            }
+        });
+    });
+</script>

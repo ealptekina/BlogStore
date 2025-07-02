@@ -68,5 +68,13 @@ namespace BlogStore.DataAccessLayer.EntityFramework
                 .Include(x => x.Category)
                 .ToList();
         }
+
+        public List<Article> GetListWithCategoryAndUser()
+        {
+            return _context.Articles
+         .Include(x => x.Category)
+         .Include(x => x.AppUser)
+         .ToList();
+        }
     }
 }

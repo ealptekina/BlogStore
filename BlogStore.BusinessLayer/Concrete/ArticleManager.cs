@@ -94,5 +94,10 @@ namespace BlogStore.BusinessLayer.Concrete
         {
             return _articleDal.GetArticlesWithCategory();
         }
+
+        public List<Article> TGetListWithCategoryAndUser()
+        {
+            return _articleDal.GetListWithCategoryAndUser();
+        }
     }
 }
