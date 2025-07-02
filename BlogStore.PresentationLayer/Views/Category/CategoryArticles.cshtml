@@ -1,23 +1,25 @@
 ﻿@model List<BlogStore.EntityLayer.Entities.Article>
 
 @{
-    ViewData["Title"] = "Yazarın Makaleleri";
+    ViewData["Title"] = $"{ViewBag.CategoryName} Kategorisi";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
     int currentPage = ViewBag.CurrentPage ?? 1;
     int totalPages = ViewBag.TotalPages ?? 1;
-    string authorSlug = ViewBag.AuthorNameSlug ?? "";
+    string categorySlug = ViewBag.CategorySlug ?? "";
 }
 
 <div class="container py-5">
+    <h4 class="mb-4"><strong>@ViewBag.CategoryName</strong> Kategorisindeki Yazılar</h4>
 
     <div class="row">
         @if (Model == null || !Model.Any())
         {
-            <p>Bu yazarın henüz hiç makalesi yok.</p>
+            <p>Bu kategoriye ait henüz makale bulunmamaktadır.</p>
         }
         else
         {
-            @foreach (var article in Model)
+            foreach (var article in Model)
             {
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
@@ -42,33 +44,32 @@
             }
         }
     </div>
-</div>
-    <!-- Pagination -->
+
+    <!-- ✅ Pagination -->
     @if (totalPages > 1)
     {
-        <nav aria-label="Page navigation example" class="mt-4">
+        <nav class="mt-4" aria-label="Kategori Sayfalama">
             <ul class="pagination justify-content-center">
 
-                <!-- Önceki butonu -->
+                <!-- Önceki -->
                 <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("AuthorArticles", "Author", new { authorName = authorSlug, page = currentPage - 1 })" aria-label="Önceki">
+                    <a class="page-link" href="@Url.Action("CategoryArticles", "Category", new { categorySlug = categorySlug, page = currentPage - 1 })" aria-label="Önceki">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
 
-                <!-- Sayfa numaraları -->
+                <!-- Sayfa Numaraları -->
                 @for (int i = 1; i <= totalPages; i++)
                 {
                     <li class="page-item @(currentPage == i ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("AuthorArticles", "Author", new { authorName = authorSlug, page = i })">@i</a>
+                        <a class="page-link" href="@Url.Action("CategoryArticles", "Category", new { categorySlug = categorySlug, page = i })">@i</a>
                     </li>
                 }
 
-                <!-- Sonraki butonu -->
+                <!-- Sonraki -->
                 <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("AuthorArticles", "Author", new { authorName = authorSlug, page = currentPage + 1 })" aria-label="Sonraki">
+                    <a class="page-link" href="@Url.Action("CategoryArticles", "Category", new { categorySlug = categorySlug, page = currentPage + 1 })" aria-label="Sonraki">
                         <span aria-hidden="true">&raquo;</span>
-
                     </a>
                 </li>
 

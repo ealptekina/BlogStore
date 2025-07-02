@@ -17,6 +17,6 @@ namespace BlogStore.DataAccessLayer.Abstract
 
         public Article GetArticleByIdWithIncludes(int id);
         Article Get(Expression<Func<Article, bool>> filter);
-
+        List<Article> GetArticlesWithCategory();
     }
 }

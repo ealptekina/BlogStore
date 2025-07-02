@@ -61,5 +61,12 @@ namespace BlogStore.DataAccessLayer.EntityFramework
         {
             return _context.Articles.AsEnumerable().FirstOrDefault(predicate);
         }
+
+        public List<Article> GetArticlesWithCategory()
+        {
+            return _context.Articles
+                .Include(x => x.Category)
+                .ToList();
+        }
     }
 }
