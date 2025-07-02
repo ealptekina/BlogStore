@@ -1,44 +1,19 @@
-using BlogStore.BusinessLayer.Abstract;
-using BlogStore.BusinessLayer.Concrete;
-using BlogStore.DataAccessLayer.Abstract;
-using BlogStore.DataAccessLayer.Context;
-using BlogStore.DataAccessLayer.EntityFramework;
-using BlogStore.EntityLayer.Entities;
-using Microsoft.AspNetCore.Identity;
+using BlogStore.BusinessLayer.Container;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<ICategoryService, CategoryManager>();
-builder.Services.AddScoped<ICategoryDal, EFCategoryDal>();
-
-
-builder.Services.AddScoped<ICommentService, CommentManager>();
-builder.Services.AddScoped<ICommentDal, EFCommentDal>();
-
-builder.Services.AddScoped<IArticleService, ArticleManager>();
-builder.Services.AddScoped<IArticleDal, EFArticleDal>();
-
-builder.Services.AddScoped<ITagService, TagManager>();
-builder.Services.AddScoped<ITagDal, EFTagDal>();
-
-
-builder.Services.AddDbContext<BlogContext>();
-builder.Services.AddIdentity<AppUser, IdentityRole>()
-    .AddEntityFrameworkStores<BlogContext>()
-    .AddDefaultTokenProviders();  // <<< Burada kesinlikle olmalý
-
-
+// BusinessLayer servislerini buradan ekle
+builder.Services.AddBusinessServices();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline konfigürasyonlarý
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -58,7 +33,5 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{slug?}");
-
-
 
 app.Run();
