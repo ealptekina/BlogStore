@@ -1,8 +1,161 @@
-﻿
+﻿@model BlogStore.PresentationLayer.Models.DashboardViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Yazar Paneli";
     Layout = "~/Views/AdminLayout/_AuthorLayout.cshtml";
 }
+<div class="row">
+    <!-- Sol kısım: Makale ve grafikler -->
+    <div class="col-lg-8">
+        <div class="card w-100">
+            <div class="card-body">
+                <div class="d-md-flex align-items-center">
+                    <div>
+                        <h4 class="card-title">Kategori Bazlı Makale Sayısı</h4>
+                        <p class="card-subtitle">Sistemdeki kategori dağılımı</p>
+                    </div>
+                </div>
+                <canvas id="categoryChart" class="mt-4" height="150"></canvas>
+            </div>
+        </div>
 
-<h1>Index</h1>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Yazar Makale Dağılımı ve Kategorileri</h4>
+                @if (Model.AuthorArticleWithCategories != null && Model.AuthorArticleWithCategories.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var author in Model.AuthorArticleWithCategories)
+                        {
+                            <li class="list-group-item">
+                                <strong>@author.UserName</strong> -
+                                <span>Makale Sayısı: @author.ArticleCount</span><br />
+                                <small>
+                                    Yazdığı Kategoriler:
+                                    @if (author.Categories != null && author.Categories.Any())
+                                    {
+                                        @string.Join(", ", author.Categories)
+                                    }
+                                    else
+                                    {
+                                        <em>Yok</em>
+                                    }
+                                </small>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Henüz yazar verisi yok.</p>
+                }
+            </div>
+        </div>
 
+
+
+        <!-- Son 5 Makale -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Son 5 Makale</h4>
+                <ul class="list-group">
+                    @if (Model.Last5Articles != null && Model.Last5Articles.Any())
+                    {
+                        @foreach (var article in Model.Last5Articles)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>@article.Title</strong> - @article.CreatedDate.ToString("dd.MM.yyyy")
+                                </div>
+                                <div>
+                                    <a href="/Article/ArticleDetail/@article.Slug" class="btn btn-sm btn-outline-primary me-1">Detay</a>
+                                </div>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-muted">Henüz makale eklenmemiş.</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sağ kısım: Özet bilgiler -->
+    <div class="col-lg-4">
+        <div class="card overflow-hidden h-100">
+            <!-- h-100 ile kart yüksekliği eşitlenir -->
+            <div class="card-body d-flex flex-column justify-content-center">
+                <h4 class="card-title mb-4 text-center">Özet Bilgiler</h4>
+
+                <div class="d-flex align-items-center mb-3">
+                    <span class="btn btn-success rounded-circle round-48 hstack justify-content-center">
+                        <i class="ti ti-message-dots fs-6"></i>
+                    </span>
+                    <div class="ms-3">
+                        <h5 class="mb-0 fw-bolder fs-4">En Çok Yorum Alan</h5>
+                        <span class="text-muted fs-3">
+                            @(Model.MostCommentedArticle != null ? Model.MostCommentedArticle.Title : "Yok")
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="d-flex align-items-center mb-4">
+                    <span class="btn btn-primary rounded-circle round-48 d-flex align-items-center justify-content-center me-3">
+                        <i class="ti ti-article fs-5"></i>
+                    </span>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Toplam Makale</h6>
+                        <p class="mb-0 text-muted fs-5">@Model.ArticleCount</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <span class="btn btn-warning rounded-circle round-48 d-flex align-items-center justify-content-center me-3">
+                        <i class="ti ti-category fs-5"></i>
+                    </span>
+                    <div>
+                        <h6 class="mb-1 fw-bold">Kategori Sayısı</h6>
+                        <p class="mb-0 text-muted fs-5">@Model.CategoryCount</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Razor'dan JavaScript'e düzgün veri aktarmak için JSON.stringify kullanıyoruz
+        const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CategoryStats.Select(s => s.CategoryName)));
+        const data = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CategoryStats.Select(s => s.Count)));
+
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Makale Sayısı',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        precision: 0
+                    }
+                }
+            }
+        });
+    </script>
+}
