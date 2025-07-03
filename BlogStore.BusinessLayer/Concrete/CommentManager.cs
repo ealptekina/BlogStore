@@ -1,5 +1,6 @@
 ﻿using BlogStore.BusinessLayer.Abstract;
 using BlogStore.DataAccessLayer.Abstract;
+using BlogStore.DataAccessLayer.Context;
 using BlogStore.DataAccessLayer.Dtos;
 using BlogStore.EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +13,15 @@ using System.Threading.Tasks;
 namespace BlogStore.BusinessLayer.Concrete
 {
     public class CommentManager : ICommentService
+
     {
         private readonly ICommentDal _commentDal;
+        private readonly BlogContext _context;
 
-        public CommentManager(ICommentDal commentDal)
+        public CommentManager(ICommentDal commentDal, BlogContext context)
         {
             _commentDal = commentDal;
+            _context = context;
         }
 
         public void TDelete(int id)
@@ -64,5 +68,13 @@ namespace BlogStore.BusinessLayer.Concrete
             return _commentDal.GetCommentsWithArticleTitles();
         }
 
+        public List<Comment> GetCommentsByArticle(int articleId)
+        {
+            return _context.Comments
+                           .Include(c => c.AppUser) // Kullanıcı bilgisini de getir
+                           .Where(c => c.ArticleId == articleId)
+                           .OrderByDescending(c => c.CommentDate)
+                           .ToList();
+        }
     }
 }

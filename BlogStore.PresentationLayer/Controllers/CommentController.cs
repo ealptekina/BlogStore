@@ -72,15 +72,11 @@ namespace BlogStore.PresentationLayer.Controllers
         public async Task<IActionResult> Add(Comment comment)
         {
             if (comment.ArticleId == 0)
-            {
                 return Json(new { success = false, message = "Makale bilgisi eksik." });
-            }
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return Json(new { success = false, message = "Giriş yapmalısınız." });
-            }
 
             comment.AppUserId = user.Id.ToString();
             comment.UserNameSurname = user.UserName;
@@ -90,14 +86,15 @@ namespace BlogStore.PresentationLayer.Controllers
             try
             {
                 _commentService.TInsert(comment);
-                // redirectUrl KALDIRILDI, sadece success ve message dönüyoruz
-                return Json(new { success = true, message = "Yorumunuz başarıyla eklendi." });
+                return Json(new { success = true, message = "Yorum başarıyla eklendi." });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Yorum eklenirken hata oluştu: " + ex.Message });
+                return Json(new { success = false, message = "Hata oluştu: " + ex.Message });
             }
         }
+
+
 
 
 
@@ -185,6 +182,13 @@ namespace BlogStore.PresentationLayer.Controllers
             ViewBag.Score = score;
 
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult GetCommentsByArticle(int articleId)
+        {
+            var comments = _commentService.GetCommentsByArticle(articleId);
+            return PartialView("_CommentListPartial", comments);
         }
 
     }

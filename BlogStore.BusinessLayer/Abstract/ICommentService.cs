@@ -15,5 +15,7 @@ namespace BlogStore.BusinessLayer.Abstract
 
         List<CommentWithArticleDto> GetCommentsWithArticleTitles();
 
+        List<Comment> GetCommentsByArticle(int articleId);
+
     }
 }
