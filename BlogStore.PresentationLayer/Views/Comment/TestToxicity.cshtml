@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Toksik Yorum Testi";
+    Layout = "~/Views/AdminLayout/_AuthorLayout.cshtml";
+}
+
+<div class="card mb-0">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">@ViewData["Title"]</h5>  <!-- Başlık burada -->
+        <p class="card-subtitle mb-4">Yorumlarınızı toksik analiz için buraya yazabilirsiniz.</p>
+
+        <form method="post" asp-action="TestToxicity" id="toxicityForm">
+            <div class="mb-3">
+                <label for="commentText" class="form-label">Yorum Giriniz:</label>
+                <textarea id="commentText" name="commentText" class="form-control" rows="4">@ViewBag.CommentText</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Analiz Et</button>
+            <button type="button" id="clearBtn" class="btn btn-secondary ms-2">Temizle</button>
+        </form>
+
+        @if (ViewBag.Message != null)
+        {
+            <div id="messageDiv" class="alert alert-warning mt-3">@ViewBag.Message</div>
+        }
+
+        @if (ViewBag.IsToxic != null)
+        {
+            <div id="resultDiv" class="mt-4">
+                <h4>Sonuç:</h4>
+                <p><strong>Yorum:</strong> @ViewBag.CommentText</p>
+                <p><strong>Toksik mi?:</strong> @((bool)ViewBag.IsToxic ? "<span class='text-danger'>Evet</span>" : "<span class='text-success'>Hayır</span>")</p>
+                <p><strong>Skor:</strong> @ViewBag.Score</p>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    document.getElementById('clearBtn').addEventListener('click', function () {
+        document.getElementById('commentText').value = '';
+
+        var messageDiv = document.getElementById('messageDiv');
+        if (messageDiv) messageDiv.style.display = 'none';
+
+        var resultDiv = document.getElementById('resultDiv');
+        if (resultDiv) resultDiv.style.display = 'none';
+    });
+</script>

@@ -13,11 +13,13 @@ namespace BlogStore.PresentationLayer.Controllers
     {
         private readonly ICommentService _commentService;
         private readonly UserManager<AppUser> _userManager;  // <-- buraya ekledik
+        private readonly IToxicityService _toxicityService;
 
-        public CommentController(ICommentService commentService, UserManager<AppUser> userManager)
+        public CommentController(ICommentService commentService, UserManager<AppUser> userManager, IToxicityService toxicityService)
         {
             _commentService = commentService;
             _userManager = userManager; // constructor'da ata
+            _toxicityService = toxicityService;
         }
 
         public IActionResult CommentList()
@@ -119,18 +121,22 @@ namespace BlogStore.PresentationLayer.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReplyToComment(int id, Comment replyComment)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
-                return RedirectToAction("UserLogin", "Login"); // veya uygun bir yönlendirme
-            }
+                return RedirectToAction("UserLogin", "Login");
 
             var originalComment = _commentService.TGetById(id);
             if (originalComment == null)
-            {
                 return NotFound();
+
+            if (string.IsNullOrWhiteSpace(replyComment.CommentDetail))
+            {
+                ModelState.AddModelError("CommentDetail", "Cevap zorunludur.");
+                ViewBag.OriginalComment = originalComment;
+                return View(replyComment);
             }
 
             replyComment.AppUserId = user.Id.ToString();
@@ -138,8 +144,7 @@ namespace BlogStore.PresentationLayer.Controllers
             replyComment.CommentDate = DateTime.Now;
             replyComment.IsValid = false;
 
-            // Eğer cevabı ana yorumun altına ilişkilendirmek istiyorsan, Comment entity'ne ParentCommentId gibi bir alan ekleyip buraya atayabilirsin.
-            // replyComment.ParentCommentId = id;
+            replyComment.ParentCommentId = id;
 
             try
             {
@@ -152,6 +157,34 @@ namespace BlogStore.PresentationLayer.Controllers
                 ViewBag.OriginalComment = originalComment;
                 return View(replyComment);
             }
+        }
+
+
+
+
+
+        // GET: Comment/TestToxicity
+        public IActionResult TestToxicity()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TestToxicity(string commentText)
+        {
+            if (string.IsNullOrWhiteSpace(commentText))
+            {
+                ViewBag.Message = "Lütfen yorum giriniz.";
+                return View();
+            }
+
+            var (isToxic, score) = await _toxicityService.AnalyzeCommentAsync(commentText);
+
+            ViewBag.CommentText = commentText;
+            ViewBag.IsToxic = isToxic;
+            ViewBag.Score = score;
+
+            return View();
         }
 
     }

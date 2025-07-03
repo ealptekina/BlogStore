@@ -19,5 +19,13 @@ namespace BlogStore.EntityLayer.Entities
 
         public int ArticleId { get; set; }
         public Article Article { get; set; }
+
+        // Yeni eklenen alanlar
+        public bool IsToxic { get; set; }
+        public float ToxicityScore { get; set; }
+
+        public int? ParentCommentId { get; set; }  // Nullable int olarak ekle
+        public Comment ParentComment { get; set; }
+        public ICollection<Comment> Replies { get; set; }
     }
 }

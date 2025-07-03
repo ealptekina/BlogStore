@@ -14,9 +14,8 @@
             <textarea class="form-control" rows="4" readonly>@ViewBag.OriginalComment?.CommentDetail</textarea>
         </div>
 
-        <form asp-action="ReplyToComment" method="post">
+        <form asp-action="ReplyToComment" asp-route-id="@ViewBag.OriginalComment.CommentId" method="post">
             @Html.AntiForgeryToken()
-            <input type="hidden" asp-for="CommentId" />
 
             <div class="mb-3">
                 <label asp-for="CommentDetail" class="form-label">Cevabınız</label>
@@ -27,6 +26,7 @@
             <button type="submit" class="btn btn-primary">Gönder</button>
             <a href="@Url.Action("CommentList", "Comment")" class="btn btn-secondary ms-2">İptal</a>
         </form>
+
     </div>
 </div>
 

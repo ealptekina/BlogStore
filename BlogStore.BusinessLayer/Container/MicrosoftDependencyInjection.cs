@@ -33,6 +33,10 @@ namespace BlogStore.BusinessLayer.Container
                     .AddEntityFrameworkStores<BlogContext>()
                     .AddDefaultTokenProviders();
 
+            services.AddScoped<IToxicityService, ToxicityManager>();
+
+
+
             return services;
         }
     }
