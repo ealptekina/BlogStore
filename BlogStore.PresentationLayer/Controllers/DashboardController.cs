@@ -74,7 +74,8 @@ namespace BlogStore.PresentationLayer.Controllers
                 CategoryStats = articleCountsByCategory,
                 CategoryCount = categoryCount,
                 ArticleCount = articleCount,
-                CommentCount = commentCount
+                CommentCount = commentCount,
+                AuthorArticleWithCategories = authorData
             };
 
             return View(model);
